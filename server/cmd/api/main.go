@@ -15,6 +15,8 @@ func main() {
 	if error != nil {
 		fmt.Println("Db is working")
 	}
+	env := bootstrap.NewEnv()
+	fmt.Println(env)
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Hello World",
