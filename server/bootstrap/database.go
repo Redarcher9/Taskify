@@ -6,8 +6,8 @@ import (
 	"taskify/database"
 )
 
-func SetupDB() *sql.DB {
-	db, err := database.NewPsqlDB()
+func SetupDB(EnvVariables map[string]string) *sql.DB {
+	db, err := database.NewPsqlDB(EnvVariables)
 	if err != nil {
 		fmt.Println(err)
 	}
