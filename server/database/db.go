@@ -13,14 +13,8 @@ params: EnvVariables map from env file
 
 returns: Connection string
 */
-func BuildConnString() string {
-	username := "postgres"
-	password := "postgres"
-	address := "localhost"
-	port := "5432"
-	database_name := "Taskify"
-	sslmode := "false"
-	connString := "postgres://" + username + ":" + password + "@" + address + ":" + port + "/" + database_name + "?sslmode=" + sslmode
+func BuildConnString(EnvVariables map[string]string) string {
+	connString := "postgres://" + EnvVariables["DATABASE_USERNAME"] + ":" + EnvVariables["DATABASE_PASSWORD"] + "@" + EnvVariables["DATABASE_ADDRESS"] + ":" + EnvVariables["DATABASE_PORT"] + "/" + EnvVariables["DATABASE_NAME"] + "?sslmode=" + EnvVariables["DATABASE_SSLMODE"]
 	return connString
 }
 
@@ -34,8 +28,8 @@ returns: PSQLDatabase struct with instance of postgresql server,
 	error: nil - database connection is successful
 			err - if any
 */
-func NewPsqlDB() (*sql.DB, error) {
-	connString := BuildConnString()
+func NewPsqlDB(EnvVariables map[string]string) (*sql.DB, error) {
+	connString := BuildConnString(EnvVariables)
 	db, err := sql.Open("postgres", connString)
 
 	return db, err

@@ -10,13 +10,12 @@ import (
 
 func main() {
 	r := gin.Default()
-	db := bootstrap.SetupDB()
+	env := bootstrap.NewEnv()
+	db := bootstrap.SetupDB(*env)
 	error := db.Ping()
 	if error != nil {
 		fmt.Println("Db is working")
 	}
-	env := bootstrap.NewEnv()
-	fmt.Println(env)
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Hello World",
