@@ -2,14 +2,9 @@ package database
 
 import (
 	"database/sql"
-)
 
-/*
-Description: Struct for PostGreSQL database
-*/
-type PsqlDatabase struct {
-	dbInstance *sql.DB
-}
+	_ "github.com/lib/pq"
+)
 
 /*
 Description: Builds connection string for Postgresql database
@@ -18,8 +13,14 @@ params: EnvVariables map from env file
 
 returns: Connection string
 */
-func BuildConnString(EnvVariables map[string]string) string {
-	connString := "postgres://"
+func BuildConnString() string {
+	username := "postgres"
+	password := "postgres"
+	address := "localhost"
+	port := "5432"
+	database_name := "Taskify"
+	sslmode := "false"
+	connString := "postgres://" + username + ":" + password + "@" + address + ":" + port + "/" + database_name + "?sslmode=" + sslmode
 	return connString
 }
 
@@ -33,9 +34,9 @@ returns: PSQLDatabase struct with instance of postgresql server,
 	error: nil - database connection is successful
 			err - if any
 */
-func NewPsqlDB(EnvVariables map[string]string) (*PsqlDatabase, error) {
-	connString := BuildConnString(EnvVariables)
+func NewPsqlDB() (*sql.DB, error) {
+	connString := BuildConnString()
 	db, err := sql.Open("postgres", connString)
 
-	return &PsqlDatabase{dbInstance: db}, err
+	return db, err
 }
