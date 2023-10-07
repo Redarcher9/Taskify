@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"net/http"
+	"taskify/api/routes"
 	"taskify/bootstrap"
 
 	"github.com/gin-gonic/gin"
@@ -13,14 +13,11 @@ func main() {
 	env := bootstrap.NewEnv()
 	db := bootstrap.SetupDB(*env)
 	error := db.Ping()
+	routes.SetupRoutes(*env, db, r)
 	if error != nil {
 		fmt.Println("Db is working")
 	}
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Hello World",
-		})
-	})
+
 	r.Run() // listen and serve on 0.0.0.0:8080
 	db.Close()
 }
