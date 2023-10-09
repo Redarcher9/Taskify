@@ -10,5 +10,6 @@ type UserRepository interface {
 	CheckUser(email string) error
 	CreateUser(user UserStruct) error
 	GetPassword(email string) (string, error)
-	GetUserDetails(email string) error
+	UpdatePassword(email string, password string) error
+	GetUserDetails(email string) (UserStruct, error)
 }
