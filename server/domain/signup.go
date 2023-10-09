@@ -1,5 +1,7 @@
 package domain
 
-type SignUp interface {
-	SignUp(user UserStruct) error
+import "context"
+
+type SignupUsecase interface {
+	SignUp(c context.Context, us UserStruct) error
 }
