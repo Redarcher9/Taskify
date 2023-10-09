@@ -25,9 +25,9 @@ func NewLoginUsecase(UserRepository domain.UserRepository, timeout int) domain.L
 func (lu *LoginUsecase) Login(c context.Context, ls domain.Loginstruct) error {
 	ctx, cancel := context.WithTimeout(c, time.Millisecond*100)
 	defer cancel()
-	err := lu.Repository.CheckUser(ls.Email)
-	if err != nil {
-		return err
+	userexists := lu.Repository.CheckUser(ls.Email)
+	if !userexists {
+		return errors.New("user does not exist")
 	}
 	fmt.Println(ctx.Done())
 	password, err := lu.Repository.GetPassword(ls.Email)
