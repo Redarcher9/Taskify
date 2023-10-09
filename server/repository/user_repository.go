@@ -18,17 +18,27 @@ func NewUserRepository(database *sql.DB, timeout int) domain.UserRepository {
 	}
 }
 
-func (ur *UserRepository) CheckUser(email string) error {
+func (ur *UserRepository) CheckUser(email string) bool {
+	var useremail string
 	rows, err := ur.db.Query("Select email from public.Users where email=($1)", email)
 	if err != nil {
-		return err
+		return true
 	}
 	defer rows.Close()
-	fmt.Println(rows)
-	return nil
+	for rows.Next() {
+		err := rows.Scan(&useremail)
+		if err != nil {
+			return true
+		}
+	}
+	if useremail == "" {
+		return false
+	}
+	return true
 }
 
 func (ur *UserRepository) CreateUser(user domain.UserStruct) error {
+	fmt.Println("before inserting" + user.Email)
 	_, err := ur.db.Exec("INSERT INTO public.Users(username,email,password) VALUES($1,$2,$3)", user.Username, user.Email, user.Password)
 	if err != nil {
 		return err
@@ -42,10 +52,11 @@ func (ur *UserRepository) GetPassword(email string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	rows.Close()
+	defer rows.Close()
 	for rows.Next() {
 		err := rows.Scan(&password)
 		if err != nil {
+			fmt.Println(password)
 			return "", err
 		}
 	}
@@ -66,7 +77,7 @@ func (ur *UserRepository) GetUserDetails(email string) (domain.UserStruct, error
 	if err != nil {
 		return User, err
 	}
-	rows.Close()
+	defer rows.Close()
 	for rows.Next() {
 		err := rows.Scan(&User.Username, &User.Email)
 		if err != nil {

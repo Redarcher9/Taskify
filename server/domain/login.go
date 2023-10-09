@@ -3,8 +3,8 @@ package domain
 import "context"
 
 type Loginstruct struct {
-	Email    string
-	Password string
+	Email    string `json:"Email"`
+	Password string `json:"Password"`
 }
 
 type LoginUsecase interface {
