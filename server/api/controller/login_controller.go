@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 	"taskify/domain"
+	"taskify/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,6 +22,8 @@ func (lc *LoginController) Login(c *gin.Context) {
 		})
 		return
 	}
+	ss, _ := utils.CreateToken(c, requestPayload.Email)
+	_ = utils.ValidateToken(c, ss)
 	c.JSON(http.StatusAccepted, gin.H{
 		"Message": "User has been Logged in!",
 	})
