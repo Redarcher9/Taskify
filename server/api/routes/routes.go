@@ -7,6 +7,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+/*
+Description: Sets up routes in main file
+
+Params: env - map of env variables, db - database instance, gin - gin engine
+
+Returns: NA
+*/
+
 func SetupRoutes(env map[string]string, db *sql.DB, gin *gin.Engine) {
 	Router := gin.Group("")
 	NewLoginRoute(env, db, Router)

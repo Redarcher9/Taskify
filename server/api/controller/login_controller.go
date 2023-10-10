@@ -8,10 +8,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+/*
+Description: Login Controller struct
+*/
+
 type LoginController struct {
 	LoginUsecase domain.LoginUsecase
 	HMAC_KEY     string
 }
+
+/*
+Description: Login Controller reciever function
+
+Params: gin context passed from router
+*/
 
 func (lc *LoginController) Login(c *gin.Context) {
 	var requestPayload domain.Loginstruct

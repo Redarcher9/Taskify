@@ -8,9 +8,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+/*
+Description: Signup Controller struct
+*/
+
 type SignUpController struct {
 	SignupUsecase domain.SignupUsecase
 }
+
+/*
+Description: Signup Controller reciever function
+
+Params: gin context passed from router
+*/
 
 func (sc *SignUpController) SignUp(c *gin.Context) {
 	var requestPayload domain.UserStruct

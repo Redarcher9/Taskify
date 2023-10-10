@@ -12,6 +12,6 @@ func main() {
 	env := bootstrap.NewEnv()
 	db := bootstrap.SetupDB(*env)
 	routes.SetupRoutes(*env, db, r)
-	r.Run() // listen and serve on 0.0.0.0:8080
+	r.Run()
 	db.Close()
 }

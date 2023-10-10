@@ -7,9 +7,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+/*
+Description: Ping Controller struct
+*/
 type PingController struct {
 	PingUsecase domain.PingUsecase
 }
+
+/*
+Description: Ping Controller reciever function
+
+Params: gin context passed from router
+*/
 
 func (pc *PingController) Ping(c *gin.Context) {
 	err := pc.PingUsecase.CheckPing(c)

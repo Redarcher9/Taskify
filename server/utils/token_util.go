@@ -7,6 +7,14 @@ import (
 	jwt "github.com/golang-jwt/jwt/v5"
 )
 
+/*
+Description: Creates JWT token for authentication
+
+Params: Gin context, email string, HMAC secret
+
+Returns: signedtoken and error
+*/
+
 func CreateToken(c *gin.Context, email string, secret string) (string, error) {
 
 	type MyCustomClaims struct {
@@ -30,6 +38,14 @@ func CreateToken(c *gin.Context, email string, secret string) (string, error) {
 	}
 	return ss, err
 }
+
+/*
+Description: Validates JWT token for authentication
+
+Params: Gin context, email string, HMAC secret
+
+Returns: nil-if valid, error-nil if valid or error
+*/
 
 func ValidateToken(c *gin.Context, tokenString string, secret string) error {
 	type MyCustomClaims struct {
