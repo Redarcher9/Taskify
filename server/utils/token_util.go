@@ -7,7 +7,7 @@ import (
 	jwt "github.com/golang-jwt/jwt/v5"
 )
 
-func CreateToken(c *gin.Context, email string) (string, error) {
+func CreateToken(c *gin.Context, email string, secret string) (string, error) {
 
 	type MyCustomClaims struct {
 		Name string
@@ -24,21 +24,21 @@ func CreateToken(c *gin.Context, email string) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	ss, err := token.SignedString([]byte("Scootertest"))
+	ss, err := token.SignedString([]byte(secret))
 	if err != nil {
 		return "", err
 	}
 	return ss, err
 }
 
-func ValidateToken(c *gin.Context, tokenString string) error {
+func ValidateToken(c *gin.Context, tokenString string, secret string) error {
 	type MyCustomClaims struct {
 		Name string
 		jwt.RegisteredClaims
 	}
 
 	token, err := jwt.ParseWithClaims(tokenString, &MyCustomClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte("Scootertest"), nil
+		return []byte(secret), nil
 	})
 
 	if _, ok := token.Claims.(*MyCustomClaims); ok && token.Valid {

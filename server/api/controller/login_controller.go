@@ -10,6 +10,7 @@ import (
 
 type LoginController struct {
 	LoginUsecase domain.LoginUsecase
+	HMAC_KEY     string
 }
 
 func (lc *LoginController) Login(c *gin.Context) {
@@ -22,9 +23,8 @@ func (lc *LoginController) Login(c *gin.Context) {
 		})
 		return
 	}
-	ss, _ := utils.CreateToken(c, requestPayload.Email)
+	ss, _ := utils.CreateToken(c, requestPayload.Email, lc.HMAC_KEY)
 	c.SetCookie("Auth_Token", ss, 3600, "/", "localhost", false, true)
-	_ = utils.ValidateToken(c, ss)
 	c.JSON(http.StatusAccepted, gin.H{
 		"Message": "User has been Logged in!",
 	})
