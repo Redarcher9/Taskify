@@ -19,6 +19,7 @@ func NewLoginRoute(env map[string]string, db *sql.DB, r *gin.RouterGroup) {
 	lr := repository.NewUserRepository(db, timeout)
 	lc := &controller.LoginController{
 		LoginUsecase: usecase.NewLoginUsecase(lr, timeout),
+		HMAC_KEY:     env["HMAC_KEY"],
 	}
 	r.POST("/login", lc.Login)
 }

@@ -12,6 +12,6 @@ func SetupRoutes(env map[string]string, db *sql.DB, gin *gin.Engine) {
 	NewLoginRoute(env, db, Router)
 	NewSignupRoute(env, db, Router)
 	ProtectedRoute := gin.Group("")
-	ProtectedRoute.Use(middleware.JwtAuthMiddleware(""))
+	ProtectedRoute.Use(middleware.JwtAuthMiddleware(env["HMAC_KEY"]))
 	NewPingRoute(env, db, ProtectedRoute)
 }
